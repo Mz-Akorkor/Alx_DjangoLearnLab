@@ -6,6 +6,8 @@ from .models import Book
 from .models import Library 
 from django.contrib.auth.decorators import user_passes_test
 from .models import UserProfile
+from django.contrib.auth.decorators import permission_required
+from django import forms
 
 # Function-based view: list all books
 def list_books(request):
@@ -40,7 +42,6 @@ def is_librarian(user):
 def is_member(user):
     return hasattr(user, 'userprofile') and user.userprofile.role == 'Member'
 
-
 # Views restricted by role
 @user_passes_test(is_admin)
 def admin_view(request):
@@ -53,3 +54,20 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+# Add a new book (requires "can_add_book")
+@permission_required('relationship_app.can_add_book')
+def add_book(request):
+    return HttpResponse("You have permission to add a book.")
+
+# Edit a book (requires "can_change_book")
+@permission_required('relationship_app.can_change_book')
+def edit_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    return HttpResponse(f"You can edit the book: {book.title}")
+
+# Delete a book (requires "can_delete_book")
+@permission_required('relationship_app.can_delete_book')
+def delete_book(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+    return HttpResponse(f"You can delete the book: {book.title}")
