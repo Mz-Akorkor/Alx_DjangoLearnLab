@@ -6,10 +6,24 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     publication_year = models.IntegerField()
 
+    class Meta:
+        # Custom permissions for fine-grained access control
+        permissions = [
+            ("can_view", "Can view book"),
+            ("can_create", "Can create book"),
+            ("can_edit", "Can edit book"),
+            ("can_delete", "Can delete book"),
+        ]
+
     def __str__(self):
         return f"{self.title} by {self.author} ({self.publication_year})"
-    
+
+
 class CustomUserManager(BaseUserManager):
+    """
+    Custom manager for CustomUser.
+    Handles creation of users and superusers with additional fields.
+    """
     use_in_migrations = True
 
     def _create_user(self, username, email, password, **extra_fields):
@@ -39,6 +53,10 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+    """
+    Custom user model extending Django's AbstractUser.
+    Adds date_of_birth and profile_photo fields.
+    """
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
 
