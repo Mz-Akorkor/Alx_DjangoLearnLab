@@ -1,0 +1,7 @@
+<h2>Book Form</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- ✅ Django will render safe form fields -->
+    <button type="submit">Save</button>
+</form>

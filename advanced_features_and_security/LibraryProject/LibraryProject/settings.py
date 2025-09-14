@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bookshelf', 
-    'relationship_app',
+    'relationship_app', 
+    "csp",
 ]
 
 MIDDLEWARE = [
@@ -54,8 +55,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "csp.middleware.CSPMiddleware"
 ]
 
+# ✅ Define allowed sources for content
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "https://fonts.googleapis.com")
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'", "data:")
 ROOT_URLCONF = 'LibraryProject.urls'
 
 TEMPLATES = [
@@ -127,3 +134,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False  # ✅ Disable detailed error pages in production
+
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "yourdomain.com"]  # ✅ adjust for deployment
+
+# ✅ Security headers
+SECURE_BROWSER_XSS_FILTER = True          # Helps prevent reflected XSS
+X_FRAME_OPTIONS = "DENY"                  # Prevent clickjacking (no iframes)
+SECURE_CONTENT_TYPE_NOSNIFF = True        # Prevent MIME-sniffing attacks
+
+# ✅ Cookies must be sent over HTTPS (only enable if running with HTTPS)
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Security Notes:
+# - DEBUG = False disables debug info in production
+# - CSRF_COOKIE_SECURE & SESSION_COOKIE_SECURE enforce HTTPS cookies
+# - CSP_* headers restrict sources to prevent XSS
+# - Queries use Django ORM to avoid SQL injection

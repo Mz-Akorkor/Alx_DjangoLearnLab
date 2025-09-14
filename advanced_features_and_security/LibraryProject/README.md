@@ -51,3 +51,21 @@ In `bookshelf/views.py`, we use the `@permission_required` decorator:
    - Viewers should only see the book list.
    - Editors can add/edit books.
    - Admins can delete books as well.
+
+# Security Enhancements
+
+## Settings
+- `DEBUG = False`, restricted `ALLOWED_HOSTS`
+- `SECURE_BROWSER_XSS_FILTER`, `X_FRAME_OPTIONS`, `SECURE_CONTENT_TYPE_NOSNIFF`
+- Secure cookies: `CSRF_COOKIE_SECURE`, `SESSION_COOKIE_SECURE`
+
+## Templates
+- All forms use `{% csrf_token %}`
+
+## Views
+- ORM queries used instead of raw SQL to prevent injection
+- Basic input validation on form fields
+
+## Content Security Policy (CSP)
+- Configured via `django-csp` middleware
+- Restricts scripts, styles, and images to safe sources
