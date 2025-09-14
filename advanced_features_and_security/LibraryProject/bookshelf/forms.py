@@ -1,7 +1,7 @@
 from django import forms
 from .models import Book
 
-class BookForm(forms.ModelForm):
+class ExampleForm(forms.ModelForm):
     """
     Secure Book form using Django's ModelForm.
     Handles validation and prevents SQL injection by relying on ORM.
