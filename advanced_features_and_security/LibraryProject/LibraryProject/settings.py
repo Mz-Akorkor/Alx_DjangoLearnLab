@@ -154,3 +154,47 @@ SESSION_COOKIE_SECURE = True
 # - CSRF_COOKIE_SECURE & SESSION_COOKIE_SECURE enforce HTTPS cookies
 # - CSP_* headers restrict sources to prevent XSS
 # - Queries use Django ORM to avoid SQL injection
+
+# Redirect all HTTP requests to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply to all subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading in browsers
+
+# Secure cookies (sent only over HTTPS)
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Additional security headers
+X_FRAME_OPTIONS = "DENY"  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME-type sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enable browser XSS protection
+
+# ==============================
+# 🔒 HTTPS and Security Settings
+# ==============================
+
+# Redirect all HTTP -> HTTPS
+# ⚠️ If DEBUG=True (local dev), don’t force HTTPS or it will block 127.0.0.1
+import os
+
+if not DEBUG:  
+    SECURE_SSL_REDIRECT = True
+else:
+    SECURE_SSL_REDIRECT = False
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Browser security headers
+X_FRAME_OPTIONS = "DENY"  # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevent MIME sniffing
+SECURE_BROWSER_XSS_FILTER = True    # Enable browser XSS filter

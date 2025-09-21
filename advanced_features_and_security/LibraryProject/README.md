@@ -69,3 +69,16 @@ In `bookshelf/views.py`, we use the `@permission_required` decorator:
 ## Content Security Policy (CSP)
 - Configured via `django-csp` middleware
 - Restricts scripts, styles, and images to safe sources
+
+## HTTPS & Secure Redirects
+
+We implemented HTTPS security best practices in Django:
+
+- **SECURE_SSL_REDIRECT** forces all HTTP traffic to HTTPS.  
+- **HSTS (HTTP Strict Transport Security)** ensures browsers only connect via HTTPS.  
+- **Secure Cookies** (`SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`) prevent cookies from being sent over HTTP.  
+- **Security Headers** (`X_FRAME_OPTIONS`, `SECURE_CONTENT_TYPE_NOSNIFF`, `SECURE_BROWSER_XSS_FILTER`) protect against clickjacking, MIME sniffing, and XSS.
+
+### Deployment Notes
+In production, configure SSL/TLS at the web server level (e.g., Nginx with Let’s Encrypt).  
+Locally, keep `SECURE_SSL_REDIRECT = False` to avoid blocking access on `127.0.0.1:8000`.
